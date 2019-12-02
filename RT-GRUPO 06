@@ -1,0 +1,47 @@
+enable
+configure terminal
+hostname RT-01
+banner motd "ACESSO APENAS PARA O DEPARTAMENTO DE TI"
+enable secret SenhadaEnable
+username ruthbraga privilege 15 secret utopia*00
+username kaikyreis privilege 15 secret 	utopia*00
+username jadisson privilege 15 secret utopia*00
+username guilhermecezar privilege 15 secret utopia*00	
+username Leonardomelo privilege 15 secret utopia*00
+username kawanfelix privilege 15 secret batata01
+username rakelpaula privilege 15 secret batata02
+username carlospaulo privilege 15 secret batata03
+username leonardocruz privilege 15 secret batata04
+login block-for 280 attempts 7 within 600
+ip domain-name rede6.local
+crypto key generate rsa general-keys modulus 1024
+line vty 0 15
+login local
+transport input ssh
+exec-timeout 5
+exit
+line console 0
+password SenhadaConsole
+login
+exit
+service password-encryption
+interface gigabitEthernet 0/1
+no shutdown
+interface gigabitEthernet 0/1.26
+encapsulation Dot1Q 26
+ip address 192.168.26.1 255.255.255.0
+ip  helper-address 192.168.249.5
+interface gigabitEthernet 0/1.126
+encapsulation Dot1Q 126
+ip address 192.168.249.1 255.255.255.0
+ip  helper-address 192.168.249.5
+interface gigabitEthernet 0/1.25
+encapsulation dot1Q 25
+ip address 192.168.25.1 255.255.255.0
+ip helper-address 192.168.250.5 
+interface gigabitEthernet 0/1.125
+encapsulation dot1Q 125
+ip address 192.168.250.1 255.255.255.0
+no shutdown
+exit
+do wr
