@@ -1,0 +1,49 @@
+enable
+configure terminal
+hostname SW-01
+banner motd "ACESSO APENAS PARA O DEPARTAMENTO DE TI"
+enable secret SenhadaEnable
+username ruthbraga privilege 15 secret utopia*00
+username kaikyreis privilege 15 secret utopia*00
+username jadisson privilege 15 secret utopia*00
+username guilhermecezar privilege 15 secret utopia*00
+username Leonardomelo privilege 15 secret utopia*00
+login block-for 280 attempts 7 within 600
+ip domain-name rede6.local
+crypto key generate rsa general-keys modulus 1024
+line vty 0 15
+login local
+transport input ssh
+exec-timeout 5
+exit
+line console 0
+password SenhadaConsole
+login
+exit
+service password-encryption
+vlan 26
+name VLAN-26
+vlan 126 
+name VLAN-126
+interface fastethernet 0/2
+switchport mode access
+switchport access vlan 26
+description PC-02
+exit 
+interface fastethernet 0/4
+switchport mode access
+switchport access vlan 26
+description PC-01
+exit
+interface fastethernet 0/24
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 26,126,99
+exit
+interface vlan 126
+ip address 192.168.249.253 255.255.255.0
+description INTERFACE DE GERENCIAMENTO
+no shutdown
+exit
+ip default-gateway 192.168.249.1
+do wr
